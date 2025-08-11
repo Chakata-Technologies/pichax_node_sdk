@@ -8,14 +8,14 @@ Generate signed, expirable image URLs for transformations such as rotate, resize
 ## 🚀 Installation
 
 ```bash
-npm install pichax
+npm install @chakata/pichax
 # or
 yarn add pichax
 ```
 
 ## Example
 ```ts
-import { PichaX } from 'pichax';
+import { PichaX } from '@chakata/pichax';
 
 const picha = new PichaX('your_api_key', 'your_api_secret');
 
