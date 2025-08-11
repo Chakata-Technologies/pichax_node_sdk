@@ -1,64 +1,78 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PichaX = exports.PichaXIdenticon = exports.PichaXTransform = void 0;
-exports.generateSignature = generateSignature;
+exports.PichaX = void 0;
 const crypto_1 = require("crypto");
-class PichaXTransform {
-    constructor(options) {
-        if (!options.params || Object.keys(options.params).length === 0) {
-            throw new Error('At least one transformation must be specified.');
-        }
-        this.options = options;
-    }
-    getUrl() {
-        const { key, secret, id, expires, src, params } = this.options;
-        const signature = generateSignature(id, expires, secret);
-        const query = new URLSearchParams({
-            key,
-            expires: expires.toString(),
-            signature,
-            id,
-            src,
-        });
-        const baseUrl = 'https://app.pichax.dev/api/v1/generate/transform';
-        // const baseUrl = 'http://localhost:4000/api/v1/generate/transform';
-        return `${baseUrl}?${query.toString()}&params=${JSON.stringify(params).replace('/', '')}`;
-    }
-}
-exports.PichaXTransform = PichaXTransform;
-class PichaXIdenticon {
-    constructor(options) {
-        this.options = options;
-    }
-    getUrl() {
-        const { key, secret, id, expires, name } = this.options;
-        const signature = generateSignature(id, expires, secret);
-        const query = new URLSearchParams({
-            key,
-            expires: expires.toString(),
-            id,
-            signature,
-            name,
-        });
-        const baseUrl = 'https://app.pichax.dev/api/v1/generate/identicon';
-        // const baseUrl = 'http://localhost:4000/api/v1/generate/identicon';
-        return `${baseUrl}?${query.toString()}`;
-    }
-}
-exports.PichaXIdenticon = PichaXIdenticon;
-class PichaX {
-    static transform(options) {
-        return new PichaXTransform(options);
-    }
-    static identicon(options) {
-        return new PichaXIdenticon(options);
-    }
-}
-exports.PichaX = PichaX;
+const url_1 = require("url");
 /**
- * HMAC-SHA256 Signature Generator
+ * Signature generator
  */
 function generateSignature(id, expires, secret) {
     const data = `${id}:${expires}`;
     return (0, crypto_1.createHmac)('sha256', secret).update(data).digest('hex');
 }
+/**
+ * Transform URL builder
+ */
+class TransformUrlBuilder {
+    constructor(baseUrl, apiKey, apiSecret, params) {
+        this.baseUrl = baseUrl;
+        this.apiKey = apiKey;
+        this.apiSecret = apiSecret;
+        this.params = params;
+        if (!params.params || Object.keys(params.params).length === 0) {
+            throw new Error('At least one transformation must be specified.');
+        }
+    }
+    getUrl() {
+        const { id, expires, src, params } = this.params;
+        const signature = generateSignature(id, expires, this.apiSecret);
+        const query = new url_1.URLSearchParams({
+            key: this.apiKey,
+            expires: expires.toString(),
+            signature,
+            src,
+        });
+        const transformUrl = `${this.baseUrl}/transform`;
+        return `${transformUrl}?${query.toString()}&params=${JSON.stringify(params).replace('/', '')}`;
+    }
+}
+/**
+ * Identicon URL builder
+ */
+class IdenticonUrlBuilder {
+    constructor(baseUrl, apiKey, apiSecret, params) {
+        this.baseUrl = baseUrl;
+        this.apiKey = apiKey;
+        this.apiSecret = apiSecret;
+        this.params = params;
+    }
+    getUrl() {
+        const { id, expires, name } = this.params;
+        const signature = generateSignature(id, expires, this.apiSecret);
+        const query = new url_1.URLSearchParams({
+            key: this.apiKey,
+            expires: expires.toString(),
+            signature,
+            name,
+        });
+        const identiconUrl = `${this.baseUrl}/identicon`;
+        return `${identiconUrl}?${query.toString()}`;
+    }
+}
+/**
+ * PichaX Main Class
+ */
+class PichaX {
+    constructor(apiKey, apiSecret) {
+        this.baseUrl = 'https://api.pichax.dev/api/v1/generate';
+        this.apiKey = apiKey;
+        this.apiSecret = apiSecret;
+    }
+    transform(params) {
+        return new TransformUrlBuilder(this.baseUrl, this.apiKey, this.apiSecret, params);
+    }
+    identicon(params) {
+        return new IdenticonUrlBuilder(this.baseUrl, this.apiKey, this.apiSecret, params);
+    }
+}
+exports.PichaX = PichaX;

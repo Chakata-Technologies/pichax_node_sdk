@@ -1,47 +1,35 @@
-export type RotateTransform = {
-    rotate: {
-        degrees: number;
-    };
-};
-export type ResizeTransform = {
-    resize: {
-        scale: number;
-    };
-};
-export type FlipTransform = {
-    flip: {
-        direction: 'horizontal' | 'vertical';
-    };
-};
-export type Transformations = Partial<RotateTransform & ResizeTransform & FlipTransform>;
-export interface BaseOptions {
-    key: string;
-    secret: string;
-    id: string;
-    expires: string | number;
-}
-export interface TransformOptions extends BaseOptions {
-    src: string;
-    params: Transformations;
-}
-export interface IdenticonOptions extends BaseOptions {
-    name: string;
-}
-export declare class PichaXTransform {
-    private options;
-    constructor(options: TransformOptions);
+import { TransformParams, IdenticonParams } from './types';
+/**
+ * Transform URL builder
+ */
+declare class TransformUrlBuilder {
+    private readonly baseUrl;
+    private readonly apiKey;
+    private readonly apiSecret;
+    private readonly params;
+    constructor(baseUrl: string, apiKey: string, apiSecret: string, params: TransformParams);
     getUrl(): string;
-}
-export declare class PichaXIdenticon {
-    private options;
-    constructor(options: IdenticonOptions);
-    getUrl(): string;
-}
-export declare class PichaX {
-    static transform(options: TransformOptions): PichaXTransform;
-    static identicon(options: IdenticonOptions): PichaXIdenticon;
 }
 /**
- * HMAC-SHA256 Signature Generator
+ * Identicon URL builder
  */
-export declare function generateSignature(id: string, expires: string | number, secret: string): string;
+declare class IdenticonUrlBuilder {
+    private readonly baseUrl;
+    private readonly apiKey;
+    private readonly apiSecret;
+    private readonly params;
+    constructor(baseUrl: string, apiKey: string, apiSecret: string, params: IdenticonParams);
+    getUrl(): string;
+}
+/**
+ * PichaX Main Class
+ */
+export declare class PichaX {
+    private readonly apiKey;
+    private readonly apiSecret;
+    private readonly baseUrl;
+    constructor(apiKey: string, apiSecret: string);
+    transform(params: TransformParams): TransformUrlBuilder;
+    identicon(params: IdenticonParams): IdenticonUrlBuilder;
+}
+export {};
