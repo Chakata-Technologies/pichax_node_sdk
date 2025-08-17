@@ -13,6 +13,8 @@ describe('PichaX.transform', () => {
           rotate: { degrees: 90 },
           resize: { scale: 0.5 },
           flip: { direction: 'horizontal' },
+          crop: { x: 10, y: 10, w: 100, h: 200 },
+          grayscale: true,
         },
       })
       .getUrl();

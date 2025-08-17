@@ -1,6 +1,6 @@
 {
   "name": "@chakata/pichax",
-  "version": "0.0.2s-beta",
+  "version": "0.0.3-beta",
   "description": "Generate signed URLs for on-the-fly image transformations",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

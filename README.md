@@ -57,8 +57,16 @@ params: {
   rotate: { degrees: 90 },              // 0 - 360
   resize: { scale: 0.5 },               // 0 < scale <= 1
   flip: { direction: 'horizontal' },    // 'horizontal' | 'vertical'
+  grayscale: true,
+  crop: {x: 100, y: 100, w: 200, h: 300}, // x and y are optional and will default to 0
+  // crop: { type: "frontal_face" } Uses AI to detect front looking face
 }
 ```
+
+## Crop
+
+`crop` is a bit special. If `{ type: 'frontal_face' }` is used, PichaX uses AI to detect a frontal looking face and crops by it. This feature is experimental and we are improving it every day.
+
 
 ## ✅ Type Safety
 This SDK is written in TypeScript and includes full type definitions out of the box.

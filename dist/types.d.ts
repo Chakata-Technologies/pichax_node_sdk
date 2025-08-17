@@ -13,7 +13,21 @@ export type FlipTransform = {
         direction: 'horizontal' | 'vertical';
     };
 };
-export type Transformations = Partial<RotateTransform & ResizeTransform & FlipTransform>;
+export type CropTransform = {
+    crop: {
+        type: 'frontal_face';
+    } | {
+        type?: never;
+        x?: number;
+        y?: number;
+        w: number;
+        h: number;
+    };
+};
+export type GrayscaleTransform = {
+    grayscale: boolean;
+};
+export type Transformations = Partial<RotateTransform & ResizeTransform & FlipTransform & CropTransform & GrayscaleTransform>;
 export type BaseParams = {
     id: string;
     expires: string | number;
