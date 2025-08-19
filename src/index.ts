@@ -30,7 +30,8 @@ class TransformUrlBuilder {
   }
 
   getUrl(): string {
-    const { id, expires, src, params } = this.params;
+    const { id, expires, src, params, cache } = this.params;
+    const c = cache ?? true;
 
     const signature = generateSignature(id, expires, this.apiSecret);
 
@@ -41,9 +42,9 @@ class TransformUrlBuilder {
       src,
     });
 
+    const cache_string = !c ? '&cache=false' : '';
     const transformUrl = `${this.baseUrl}/transform`;
-
-    return `${transformUrl}?${query.toString()}&params=${JSON.stringify(
+    return `${transformUrl}?${query.toString()}${cache_string}&params=${JSON.stringify(
       params
     ).replace('/', '')}`;
   }

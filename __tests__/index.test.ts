@@ -9,6 +9,7 @@ describe('PichaX.transform', () => {
         id: 'img_123',
         expires: '1725168000',
         src: 'https://example.com/test.jpg',
+        cache: false,
         params: {
           rotate: { degrees: 90 },
           resize: { scale: 0.5 },
@@ -19,9 +20,12 @@ describe('PichaX.transform', () => {
       })
       .getUrl();
 
+    console.log(url);
+
     expect(url).toContain('key=test_key');
     expect(url).toContain('signature=');
     expect(url).toContain('params=');
+    expect(url).toContain('cache=false');
   });
 });
 

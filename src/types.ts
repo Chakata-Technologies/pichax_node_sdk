@@ -50,6 +50,7 @@ export type BaseParams = {
 export type TransformParams = BaseParams & {
   src: string;
   params: Transformations;
+  cache?: boolean;
 };
 
 export type IdenticonParams = BaseParams & {

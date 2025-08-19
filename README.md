@@ -24,6 +24,7 @@ const transformUrl = picha.transform({
   id: 'img_123',
   expires: '1725168000', // Unix timestamp
   src: 'https://example.com/image.jpg',
+  cache: false, // Not required. Default: true
   params: {
     rotate: { degrees: 90 },
     resize: { scale: 0.8 },
