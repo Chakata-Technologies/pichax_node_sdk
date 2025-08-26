@@ -13,14 +13,15 @@ describe('PichaX.transform', () => {
         params: {
           rotate: { degrees: 90 },
           resize: { scale: 0.5 },
-          flip: { direction: 'horizontal' },
+          flip: 'horizontal',
+          effects: [{ grayscale: true }, { sharpen: true }, { blur: 10 }],
+          watermark: { text: 'Watermark' },
           crop: { x: 10, y: 10, w: 100, h: 200 },
-          grayscale: true,
         },
       })
       .getUrl();
 
-    console.log(url);
+    // console.log(url);
 
     expect(url).toContain('key=test_key');
     expect(url).toContain('signature=');

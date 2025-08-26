@@ -24,7 +24,8 @@ class TransformUrlBuilder {
         }
     }
     getUrl() {
-        const { id, expires, src, params } = this.params;
+        const { id, expires, src, params, cache } = this.params;
+        const c = cache ?? true;
         const signature = generateSignature(id, expires, this.apiSecret);
         const query = new url_1.URLSearchParams({
             key: this.apiKey,
@@ -32,8 +33,9 @@ class TransformUrlBuilder {
             signature,
             src,
         });
+        const cache_string = !c ? '&cache=false' : '';
         const transformUrl = `${this.baseUrl}/transform`;
-        return `${transformUrl}?${query.toString()}&params=${JSON.stringify(params).replace('/', '')}`;
+        return `${transformUrl}?${query.toString()}${cache_string}&params=${JSON.stringify(params).replace('/', '')}`;
     }
 }
 /**

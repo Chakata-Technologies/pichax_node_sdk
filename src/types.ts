@@ -11,9 +11,7 @@ export type ResizeTransform = {
 };
 
 export type FlipTransform = {
-  flip: {
-    direction: 'horizontal' | 'vertical';
-  };
+  flip: 'horizontal' | 'vertical';
 };
 
 export type CropTransform = {
@@ -27,11 +25,30 @@ export type CropTransform = {
         y?: number;
         w: number;
         h: number;
+        mode?: 'centre' | 'attention' | 'entropy';
       };
 };
 
-export type GrayscaleTransform = {
+export type EffectsTransform = {
+  effects: Partial<GrayscaleEffect & SharpenEffect & BlurEffect>[];
+};
+
+type GrayscaleEffect = {
   grayscale: boolean;
+};
+
+type SharpenEffect = {
+  sharpen: boolean;
+};
+
+type BlurEffect = {
+  blur: number;
+};
+
+export type WatermarkTransform = {
+  watermark: {
+    text: string;
+  };
 };
 
 export type Transformations = Partial<
@@ -39,7 +56,8 @@ export type Transformations = Partial<
     ResizeTransform &
     FlipTransform &
     CropTransform &
-    GrayscaleTransform
+    EffectsTransform &
+    WatermarkTransform
 >;
 
 export type BaseParams = {

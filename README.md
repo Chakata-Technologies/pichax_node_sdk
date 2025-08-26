@@ -19,6 +19,7 @@ import { PichaX } from '@chakata/pichax';
 
 const picha = new PichaX('your_api_key', 'your_api_secret');
 
+
 // 🔁 Transform an image
 const transformUrl = picha.transform({
   id: 'img_123',
@@ -26,9 +27,20 @@ const transformUrl = picha.transform({
   src: 'https://example.com/image.jpg',
   cache: false, // Not required. Default: true
   params: {
-    rotate: { degrees: 90 },
-    resize: { scale: 0.8 },
-    flip: { direction: 'vertical' },
+    "rotate": {"degrees": 45},
+    "resize": {"w": 100, "h": 200, "mode": "fill"}, // Modes: "fit", "fill", "crop"
+    // Resize options:
+    // {"scale": 0.5} -- This will scale image to 50% of the original size
+    // {"w": 100} -- This will keep aspect ratio
+    "effects": [{"grayscale": true}, {"blur": 10}, {"sharpen": true}],
+    "format": "jpeg", // Options are: "webp", "jpeg", "png"
+    "quality": 80, // 0 - 100
+    "watermark": {"text": "Hello there"},
+    // custom watermarks are only supported in production key
+    // a default watermark is applied otherwise
+    "crop": {"x": 100,"y": 30,"w": 100,"h": 20}
+    // Crop options:
+    // {"w": 100, "h", 200, "mode": "centre"} -- Modes: "centre", "attention", "entropy"
   }
 }).getUrl();
 
