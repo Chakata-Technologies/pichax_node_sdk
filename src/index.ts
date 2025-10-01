@@ -84,7 +84,7 @@ class IdenticonUrlBuilder {
 export class PichaX {
   private readonly apiKey: string;
   private readonly apiSecret: string;
-  private readonly baseUrl: string = 'https://api.pichax.dev/api/v1/generate';
+  private readonly baseUrl: string = 'https://api.pichax.dev/v1/generate';
 
   constructor(apiKey: string, apiSecret: string) {
     this.apiKey = apiKey;
